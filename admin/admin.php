@@ -286,6 +286,19 @@ function gtm4wp_admin_output_field( $args ) {
 
 			break;
 
+		case GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_INTEGRATE_AXEPTIO . ']':
+			echo '<div class="axeptio-project-id">';
+			echo '<input type="text" id="' . esc_attr( GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-projectID]' ) . '" name="' . esc_attr( GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-projectID]' ) . '" value="' . esc_attr( $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-projectID' ] ) . '" /><br />';
+			echo '<button id="axeptio-project-validate-button">' . esc_html__( 'Validate', 'duracelltomi-google-tag-manager' ) . '</button>';
+            echo '    <br>';
+            echo '    <span class="axeptio_project_validation_error" style="display: none;"></span>';
+			echo '</div>';
+			echo '<div class="axeptio-project-version" style="display: none;">';
+			echo '	<label for="' . esc_attr( GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-version]' ) . '">' . esc_html__( 'Project version', 'duracelltomi-google-tag-manager' ) . '</label><br>';
+            echo '  <select id="' . esc_attr( GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-version]' ) . '" name="' . esc_attr( GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-version]' ) . '" data-axeptio-project-version="' . esc_attr( $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-version' ] ) . '"></select>';
+			echo '</div>';
+			break;
+
 		case GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_DATALAYER_NAME . ']':
 			echo '<input type="text" id="' . esc_attr( GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_DATALAYER_NAME . ']' ) . '" name="' . esc_attr( GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_DATALAYER_NAME . ']' ) . '" value="' . esc_attr( $gtm4wp_options[ GTM4WP_OPTION_DATALAYER_NAME ] ) . '" /><br />';
 			// gtm4wp_safe_admin_html_with_links() calls wp_kses().
@@ -621,6 +634,8 @@ function gtm4wp_sanitize_options( $options ) {
 			} else {
 				$output[ $optionname ] = $newoptionvalue;
 			}
+		} elseif ( GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-projectID' === $optionname ||  GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-version' === $optionname ) {
+			$output[ $optionname ] = esc_html__($newoptionvalue);
 		} elseif ( substr( $optionname, 0, 10 ) === 'integrate-' ) {
 			// integrations.
 			$output[ $optionname ] = (bool) $newoptionvalue;
@@ -1053,10 +1068,21 @@ function gtm4wp_add_admin_js( $hook ) {
 			'misctabtitle'          => esc_html__( 'Misc', 'duracelltomi-google-tag-manager' ),
 			'consentmodetabtitle'   => esc_html__( 'Google Consent Mode', 'duracelltomi-google-tag-manager' ),
 			'webtoffeetabtitle'     => esc_html__( 'WebToffee GDPR Cookie Consent', 'duracelltomi-google-tag-manager' ),
+			'axeptiotabtitle'       => esc_html__( 'Axeptio', 'duracelltomi-google-tag-manager' ),
 		);
 		wp_localize_script( 'admin-subtabs', 'gtm4wp', $subtabtexts );
 
 		wp_enqueue_script( 'admin-subtabs' );
+
+		$axeptiotexts = array(
+			'non_existing_account_id' => esc_html__( 'We were unable to find your project, or it appears that it has not yet been published.', 'duracelltomi-google-tag-manager' ),
+			'verification_error'      => esc_html__(  'Error verifying account ID. Try Again.', 'duracelltomi-google-tag-manager' ),
+			'empty_account_id'        => esc_html__( 'Please enter an account ID', 'duracelltomi-google-tag-manager' ),
+		);
+
+		wp_register_script( 'admin-axeptio', $gtp4wp_plugin_url . 'js/admin-axeptio.js', array(), GTM4WP_VERSION ); // phpcs:ignore
+		wp_localize_script('admin-axeptio', 'gtm4wpAxeptio', $axeptiotexts );
+		wp_enqueue_script( 'admin-axeptio' );
 
 		// phpcs ignore set due to in_footer set to true does not load the script.
 		wp_enqueue_script( 'admin-tabcreator', $gtp4wp_plugin_url . 'js/admin-tabcreator.js', array( 'jquery' ), GTM4WP_VERSION ); // phpcs:ignore
@@ -1080,6 +1106,7 @@ function gtm4wp_admin_head() {
 	.goid_ga_validation_error,
 	.ampid_validation_error,
 	.datalayername_validation_error,
+	.axeptio_project_validation_error,
 	.gtmauth_validation_error,
 	.gtmpreview_validation_error,
 	.gtm_wpconfig_set	{

@@ -97,6 +97,8 @@ define( 'GTM4WP_OPTION_INTEGRATE_COOKIEBOT', 'integrate-cookiebot' );
 
 define( 'GTM4WP_OPTION_INTEGRATE_WEBTOFFEE_GDPR', 'integrate-webtoffee-gdpr' );
 
+define( 'GTM4WP_OPTION_INTEGRATE_AXEPTIO', 'integrate-axeptio' );
+
 define( 'GTM4WP_OPTION_INTEGRATE_CONSENTMODE', 'integrate-consent-mode' );
 define( 'GTM4WP_OPTION_INTEGRATE_CONSENTMODE_ADS', 'integrate-consent-mode-ads' );
 define( 'GTM4WP_OPTION_INTEGRATE_CONSENTMODE_AD_USER_DATA', 'integrate-consent-mode-ad-user-data' );
@@ -179,6 +181,9 @@ $gtm4wp_defaultoptions = array(
 	GTM4WP_OPTION_BLACKLIST_STATUS                   => '',
 
 	GTM4WP_OPTION_INTEGRATE_WPCF7                    => false,
+
+	GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-projectID'   => '',
+	GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-version'   => '',
 
 	GTM4WP_OPTION_INTEGRATE_WCTRACKECOMMERCE         => false,
 	GTM4WP_OPTION_INTEGRATE_WCPRODPERIMPRESSION      => 10,

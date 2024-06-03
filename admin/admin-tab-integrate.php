@@ -21,7 +21,7 @@ $GLOBALS['gtm4wp_integratefieldtexts'] = array(
 			gtm4wp_safe_admin_html(
 				// translators: 1: anchor element linking to GA4 Ecommerce docs. 2: closing anchor element. 3: anchor element linking to GTM4WP setup guide for Google Analytics 4. 4: closing anchor element.
 				__(
-					'Choose this option if you would like to track e-commerce data using 
+					'Choose this option if you would like to track e-commerce data using
 					 %1$secommerce tracking%2$s.<br>
 					 Use the plugin\'s %3$sofficial guides%4$s to setup your Google Tag Manager container:<br/>
 					 <strong>WooCommerce 5.0+ is required to use this integration</strong>',
@@ -146,7 +146,6 @@ $GLOBALS['gtm4wp_integratefieldtexts'] = array(
 		),
 		'phase'       => GTM4WP_PHASE_STABLE,
 	),
-
 	GTM4WP_OPTION_INTEGRATE_AMPID                    => array(
 		'label'         => esc_html__( "Google Tag Manager 'AMP' Container ID", 'duracelltomi-google-tag-manager' ),
 		'description'   => sprintf(
@@ -264,5 +263,12 @@ $GLOBALS['gtm4wp_integratefieldtexts'] = array(
 		'phase'         => GTM4WP_PHASE_STABLE,
 		'plugintocheck' => 'webtoffee-gdpr-cookie-consent/cookie-law-info.php',
 	),
+
+
+	GTM4WP_OPTION_INTEGRATE_AXEPTIO                    => array(
+		'label'         => esc_html__( "Axeptio Project ID", 'duracelltomi-google-tag-manager' ),
+		'description'   => '',
+	),
+
 
 );

@@ -176,7 +176,7 @@ function gtm4wp_add_basic_datalayer_data( $data_layer ) {
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_LOGGEDIN ] ) {
 		$data_layer['visitorLoginState'] = 'logged-out';
-		
+
 		if ( is_user_logged_in() ) {
 			$data_layer['visitorLoginState'] = 'logged-in';
 		}
@@ -394,7 +394,7 @@ function gtm4wp_add_basic_datalayer_data( $data_layer ) {
 		if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
 			$referer_url_parts = explode( '?', esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) );
 			$data_layer['siteSearchFrom'] = $referer_url_parts[0];
-			
+
 			if ( count( $referer_url_parts ) > 1 ) {
 				$data_layer['siteSearchFrom'] = $referer_url_parts[0] . '?' . rawurlencode( $referer_url_parts[1] );
 			}
@@ -527,7 +527,7 @@ function gtm4wp_add_basic_datalayer_data( $data_layer ) {
 			if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_WEATHER ] ) {
 				$weatherdata = get_transient( 'gtm4wp-weatherdata-' . esc_attr( $client_ip ) );
 				$data_layer['weatherDataStatus'] = 'No weather data in cache (' . esc_attr( $client_ip ) . ')';
-				
+
 				if ( false !== $weatherdata ) {
 					$data_layer['weatherCategory']        = $weatherdata->weather[0]->main;
 					$data_layer['weatherDescription']     = $weatherdata->weather[0]->description;
@@ -955,24 +955,24 @@ function gtm4wp_wp_header_top( $echo = true ) {
 		$_gtm_top_content .= '
 	var CookieLawInfo_Accept_Callback = (function() {
 		var gtm4wp_original_cli_callback = CookieLawInfo_Accept_Callback;
-	
+
 		return function() {
 			if ( !window.CLI.consent ) {
 				return false;
 			}
-		
+
 			window.' . esc_js( $gtm4wp_datalayer_name ) . ' = window.' . esc_js( $gtm4wp_datalayer_name ) . ' || [];
 			window.' . esc_js( $gtm4wp_datalayer_name ) . '.push({
 				"event": "cookie_consent_update",
 				"consent_data": window.CLI.consent
 			});
-		
+
 			for(var i in window.CLI.consent) {
 				window.' . esc_js( $gtm4wp_datalayer_name ) . '.push({
 					"event": "cookie_consent_" + i
 				});
 			}
-	
+
 			if ( "function" == typeof gtm4wp_original_cli_callback ) {
 				gtm4wp_original_cli_callback();
 			}
@@ -1327,6 +1327,14 @@ if (
 	&& version_compare( WC()->version, '5.0', '>=' )
 ) {
 	require_once dirname( __FILE__ ) . '/../integration/woocommerce.php';
+}
+
+if (
+	isset( $GLOBALS['gtm4wp_options'] )
+	&& $GLOBALS['gtm4wp_options'][ GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-projectID' ]
+	&& $GLOBALS['gtm4wp_options'][ GTM4WP_OPTION_INTEGRATE_AXEPTIO . '-version' ]
+) {
+	require_once dirname( __FILE__ ) . '/../integration/axeptio.php';
 }
 
 if ( isset( $GLOBALS['gtm4wp_options'] ) && ( $GLOBALS['gtm4wp_options'][ GTM4WP_OPTION_EVENTS_USERLOGIN ] ) ) {

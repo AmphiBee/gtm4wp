@@ -70,3 +70,14 @@
 .gtm4wp-phase-deprecated:before {
 	content: "deprecated";
 }
+
+.axeptio-project-id {
+	display: flex;
+    padding-bottom: 10px;
+	align-items: center;
+}
+
+.axeptio_project_validation_error {
+	display: inline-block;
+	padding-left: 10px;
+}
